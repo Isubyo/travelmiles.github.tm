@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .payment-form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        label {
+            flex: 1;
+            color: #555;
+            margin-right: 10px;
+            font-size: 0.9em;
+        }
+
+        input, textarea, select {
+            flex: 2;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            display: none;
+            margin-top: 5px;
+        }
+
+        .fa-credit-card { color: #4CAF50; }
+        .fa-calendar-alt { color: #FFA500; }
+        .fa-lock { color: #000080; }
+        .fa-user { color: #0000FF; }
+        .fa-envelope { color: #FF4500; }
+        .fa-phone { color: #FFA500; }
+        .fa-globe { color: #4682B4; }
+        .fa-map-marker-alt { color: #A52A2A; }
+        .fa-map { color: #6A5ACD; }
+        .fa-address-card { color: #8B4513; }
+        .fa-city { color: #800080; }
+    </style>
+</head>
+<body>
+    <div class="payment-form">
+        <h2>E-Payment Form</h2>
+        <form id="payment-form">
+            <div class="form-group">
+                <label for="card-number"><i class="fas fa-credit-card"></i> Card Number:</label>
+                <input type="text" id="card-number" name="card-number" placeholder="1234 5678 9012 3456" required>
+            </div>
+            <div class="error-message" id="card-number-error">Please enter a valid card number.</div>
+            
+            <div class="form-group">
+                <label for="expiration-date"><i class="fas fa-calendar-alt"></i> Expiration Date:</label>
+                <input type="date" id="expiration-date" name="expiration-date" required>
+            </div>
+            
+            <div class="error-message" id="expiration-date-error">Please enter a valid expiration date.</div>
+
+            <div class="form-group">
+                <label for="cvv"><i class="fas fa-lock"></i> CVV:</label>
+                <input type="text" id="cvv" name="cvv" placeholder="123" required>
+            </div>
+            <div class="error-message" id="cvv-error">Please enter a valid CVV.</div>
+
+            <div class="billing-address">
+                <h3>Billing Address</h3>
+                
+                <div class="form-group">
+                    <label for="first-name"><i class="fas fa-user"></i> First Name:</label>
+                    <input type="text" id="first-name" name="first-name" placeholder="Enter Your First Name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="last-name"><i class="fas fa-user"></i> Last Name:</label>
+                    <input type="text" id="last-name" name="last-name" placeholder="Enter Your Last Name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email"><i class="fas fa-envelope"></i> Email:</label>
+                    <input type="email" id="email" name="email" placeholder="Enter Your Email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone-number"><i class="fas fa-phone"></i> Phone Number:</label>
+                    <input type="tel" id="phone-number" name="phone-number" placeholder="+1 234 567 8900" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="country"><i class="fas fa-globe"></i> Country:</label>
+                    <select id="country" name="country" onchange="updateStates()" required>
+                        <option value="">Select Country</option>
+                        <!-- Add countries here -->
+                        <option value="USA">United States</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Australia">Australia</option>
+                        <option value="UK">United Kingdom</option>
+                        <option value="Rwanda">Rwanda</option>
+                        <!-- Add other countries as needed -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="state"><i class="fas fa-map-marker-alt"></i> State/Province:</label>
+                    <select id="state" name="state" onchange="updateCity()" required>
+                        <option value="">Select State/Province</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="city"><i class="fas fa-city"></i> City:</label>
+                    <input type="text" id="city" name="city" placeholder="Enter Your City" required>
+                </div>
+
+    
+                </div>
+
+                <button type="submit">Submit Payment</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const states = {
+            "USA": ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"],
+            "Canada": ["Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Nova Scotia", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan"],
+            "Australia": ["New South Wales", "Victoria", "Queensland", "Western Australia", "South Australia", "Tasmania", "Australian Capital Territory", "Northern Territory"],
+            "UK": ["England", "Scotland", "Wales", "Northern Ireland"],
+            "Rwanda": ["Kigali", "Northern Province", "Southern Province", "Eastern Province", "Western Province"]
+            // Add other countries and their states as needed
+        };
+
+        function updateStates() {
+            const countrySelect = document.getElementById('country');
+            const stateSelect = document.getElementById('state');
+            const selectedCountry = countrySelect.value;
+
+            stateSelect.innerHTML = '<option value="">Select State/Province</option>';
+
+            if (states[selectedCountry]) {
+                states[selectedCountry].forEach(state => {
+                    const option = document.createElement('option');
+                    option.value = state;
+                    option.textContent = state;
+                    stateSelect.appendChild(option);
+                });
+            }
+        }
+
+        function updateCity() {
+            const stateSelect = document.getElementById('state');
+            const cityInput = document.getElementById('city');
+            const selectedState = stateSelect.value;
+
+            if (selectedState) {
+                // Here you can modify the city name based on the selected state if needed
+                // For now, we'll just fill it with the selected state name
+                cityInput.value = selectedState; // Automatically fill city with the state name
+            } else {
+                cityInput.value = ''; // Clear city input if no state is selected
+            }
+        }
+    </script>
+</body>
+</html>
